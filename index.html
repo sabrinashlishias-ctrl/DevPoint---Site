@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevPoint | Automação e Agendamento Inteligente</title>
+    <meta name="description" content="Automação de atendimento via WhatsApp e agendamento com IA. Otimize seu tempo e não perca leads." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              dark: {
+                bg: '#070B14',      // Main background (Deep Navy)
+                surface: '#0F1623', // Card/Section background
+                border: 'rgba(255, 255, 255, 0.08)', // Subtle border
+                text: '#E2E8F0',    // Primary text (Slate 200)
+                muted: '#94A3B8',   // Secondary text (Slate 400)
+              },
+              royal: {
+                50: '#f0f4ff',
+                100: '#e0eaff',
+                400: '#60a5fa',
+                500: '#3b82f6', 
+                600: '#2563eb', // Primary Brand
+                700: '#1d4ed8',
+                800: '#1e40af',
+                900: '#1e3a8a',
+                950: '#172554',
+              },
+              teal: {
+                400: '#2dd4bf', // Accent
+                500: '#14b8a6',
+                600: '#0d9488',
+                900: '#134e4a',
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        background-color: #070B14;
+        color: #E2E8F0;
+      }
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      /* Subtle glow for dark mode */
+      .glow-text {
+        text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-dark-bg text-dark-text selection:bg-royal-500/30">
+    <div id="root"></div>
+  </body>
+</html>

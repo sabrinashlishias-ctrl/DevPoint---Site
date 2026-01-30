@@ -1,0 +1,123 @@
+import { Plan, FaqItem, NavItem } from './types';
+
+export const PLANS: Plan[] = [
+  {
+    id: 'mvp',
+    name: 'MVP',
+    priceImplementation: 'R$ 3.000',
+    priceMaintenance: 'R$ 700/mês',
+    description: 'Ideal para validar processos e organizar o atendimento inicial.',
+    targetAudience: 'Pequenos negócios, consultórios individuais e prestadores de serviço.',
+    includes: [
+      'Atendimento automático inicial via WhatsApp (menu/triagem básica)',
+      'Coleta de dados essenciais (nome, serviço, dia/horário)',
+      'Registro de lead (Google Sheets ou CRM simples)',
+      'Agendamento no Google Calendar (criação de evento + confirmação)',
+      'Mensagens de confirmação e lembrete (1 disparo)',
+      'Tratamento básico de erro (fallback e aviso)',
+      'Documentação curta do fluxo'
+    ],
+    excludes: [
+      'Integrações complexas via API',
+      'Dashboards personalizados',
+      'IA generativa aberta'
+    ],
+    limits: [
+      '1 canal (WhatsApp)',
+      'Até 1 agenda/calendário',
+      'Até 1 integração principal + 1 secundária'
+    ],
+    estimatedTime: '5 a 10 dias úteis',
+    highlight: false,
+  },
+  {
+    id: 'profissional',
+    name: 'Profissional',
+    priceImplementation: 'R$ 5.000',
+    priceMaintenance: 'R$ 700/mês',
+    description: 'Para empresas que precisam de integração com CRM e mais robustez.',
+    targetAudience: 'Clínicas, escritórios de advocacia, imobiliárias e agências.',
+    includes: [
+      'Tudo do plano MVP',
+      'Fluxo com ramificações (reagendar/cancelar/confirmar)',
+      'Integração com CRM (Pipedrive, HubSpot, Monday, etc.)',
+      'Logs estruturados (sucesso/falha)',
+      'IA para interpretação de mensagens e respostas curtas',
+      'Checklist de qualidade e testes',
+      '2 lembretes automáticos (ex.: 24h e 2h antes)'
+    ],
+    excludes: [
+      'Banco de dados dedicado',
+      'Painel administrativo próprio'
+    ],
+    limits: [
+      'Até 2 calendários',
+      'Até 3 integrações no total',
+      'Escopo de IA limitado a atendimento/triagem'
+    ],
+    estimatedTime: '15 a 20 dias úteis',
+    highlight: true,
+  },
+  {
+    id: 'premium',
+    name: 'Premium',
+    priceImplementation: 'R$ 8.000',
+    priceMaintenance: 'R$ 700/mês',
+    description: 'Automação completa com banco de dados, retentativas e IA avançada.',
+    targetAudience: 'Médias empresas e operações com alto volume de agendamento.',
+    includes: [
+      'Tudo do plano Profissional',
+      'Agente de IA com tomada de decisão (regras e guardrails)',
+      'Integrações avançadas via API (múltiplos sistemas)',
+      'Banco de dados (Postgres/Supabase) para histórico',
+      'Fila e retentativas (retries) para robustez',
+      'Observabilidade básica (logs, alertas)',
+      'Documentação completa (fluxo + diagrama + handoff)',
+      'SLA e rotina de melhorias mensais'
+    ],
+    excludes: [
+      'Desenvolvimento de app mobile nativo',
+      'Suporte 24/7 humano (apenas monitoramento)'
+    ],
+    limits: [
+      'Escopo definido via diagnóstico',
+      'Funcionalidades extras sob orçamento'
+    ],
+    estimatedTime: '30 a 45 dias úteis',
+    highlight: false,
+  }
+];
+
+export const FAQS: FaqItem[] = [
+  {
+    question: "O que acontece se o WhatsApp cair?",
+    answer: "Nossas automações possuem tratamento de erro. Se a API oficial do WhatsApp instabilizar, o sistema segura a mensagem ou notifica um humano para assumir."
+  },
+  {
+    question: "Preciso pagar a API do WhatsApp a parte?",
+    answer: "Depende do volume. Para a maioria dos pequenos negócios, utilizamos soluções que se enquadram em faixas gratuitas ou de baixo custo. Isso é detalhado no diagnóstico."
+  },
+  {
+    question: "A IA atende qualquer tipo de pergunta?",
+    answer: "Nos planos com IA, treinamos o agente com uma base de conhecimento específica da sua empresa. Perguntas fora do escopo são direcionadas para um humano."
+  },
+  {
+    question: "Como funciona a manutenção mensal?",
+    answer: "A taxa de R$ 700 cobre monitoramento dos servidores, pequenos ajustes nos textos do fluxo e suporte técnico para garantir que as integrações continuem funcionando."
+  },
+  {
+    question: "Posso cancelar a manutenção?",
+    answer: "Sim, porém sem a manutenção não garantimos o funcionamento contínuo das integrações, pois APIs de terceiros (Google, CRM) mudam com frequência."
+  },
+  {
+    question: "Vocês atendem quais nichos?",
+    answer: "Somos especialistas em negócios baseados em agenda: clínicas, consultórios, barbearias, salões de beleza, escritórios de advocacia e consultoria."
+  }
+];
+
+export const NAV_ITEMS: NavItem[] = [
+  { label: 'Início', path: '/' },
+  { label: 'Planos', path: '/#planos' },
+  { label: 'Como funciona', path: '/como-funciona' },
+  { label: 'Contato', path: '/contato' },
+];
