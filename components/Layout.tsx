@@ -67,6 +67,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   // CAMADA 1: Layout Base
   // Use overflow-x-hidden on the wrapper to prevent horizontal scrollbars from animations
   // But ensure NO overflow-y restriction is applied here
+  // FIX: Added relative and z-1 to main to ensure content is above background decorations
   return (
     <div className="flex flex-col min-h-[100dvh] w-full bg-dark-bg text-dark-text relative selection:bg-royal-500/30 overflow-x-hidden">
       {/* Header - Z-Index 40 para ficar acima do conteúdo mas abaixo de modais críticos */}
@@ -138,8 +139,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         )}
       </header>
 
-      {/* Main Content */}
-      <main className="flex-grow pt-20 w-full relative z-0">
+      {/* Main Content - Z-Index 1 to sit above background decorations */}
+      <main className="flex-grow pt-20 w-full relative z-1">
         {children}
       </main>
 
