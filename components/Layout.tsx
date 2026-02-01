@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ArrowRight, Instagram, Linkedin, Mail, MessageCircle } from 'lucide-react';
 import { NAV_ITEMS } from '../constants';
 import ChatWidget from './ChatWidget';
@@ -13,45 +13,57 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { openChat } = useChat();
 
-  // Smart Navigation Handler
-  // Intercepts anchor links (#) to provide smooth scrolling if on the correct page
-  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
-    // If it's an anchor link for the home page (e.g., /#planos)
-    if (path.startsWith('/#')) {
-      const hash = path.substring(2); // remove "/#"
+  // CAMADA 2: Motion/Behavior
+  // Lógica segura de scroll que não quebra a navegação se o elemento não existir
+  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault(); // Take control
+
+    // Fechar menu mobile imediatamente
+    setIsMobileMenuOpen(false);
+
+    // Se for link de âncora (#)
+    if (path.includes('#')) {
+      const [route, hash] = path.split('#');
       
-      // If we are already on the home page (or root), prevent default router nav and scroll
-      if (location.pathname === '/') {
-        e.preventDefault();
+      // Se já estamos na rota correta, apenas scrola
+      if (location.pathname === (route || '/')) {
         const element = document.getElementById(hash);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
-          // Optionally update URL without reload
+          // Atualiza URL sem reload
           window.history.pushState(null, '', `/#${hash}`);
+        } else {
+            // Fallback: se elemento não existe, topo da página
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        setIsMobileMenuOpen(false);
-        return;
+      } else {
+        // Se estamos em outra página, navega para a rota com o hash
+        navigate(path);
       }
-    }
-    
-    // Default behavior for other links (change route, scroll top)
-    setIsMobileMenuOpen(false);
-    if (!path.includes('#')) {
+    } else {
+      // Navegação normal de rota
+      navigate(path);
       window.scrollTo(0, 0);
     }
   };
 
   const isHome = location.pathname === '/';
 
+  // CAMADA 1: Layout Base
   return (
-    <div className="min-h-screen flex flex-col bg-dark-bg text-dark-text">
-      {/* Header */}
-      <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${isHome ? 'bg-dark-bg md:bg-dark-bg/80 md:backdrop-blur-md border-b border-dark-border' : 'bg-dark-bg border-b border-dark-border'}`}>
+    <div className="min-h-[100dvh] flex flex-col bg-dark-bg text-dark-text relative selection:bg-royal-500/30">
+      {/* Header - Z-Index 40 para ficar acima do conteúdo mas abaixo de modais críticos */}
+      <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${isHome ? 'bg-dark-bg/90 backdrop-blur-md border-b border-dark-border' : 'bg-dark-bg border-b border-dark-border'}`}>
         <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" onClick={(e) => handleSmoothScroll(e, '/')} className="flex items-center gap-2 group relative z-50">
+          <Link 
+            to="/" 
+            onClick={(e) => handleNavigation(e, '/')} 
+            className="flex items-center gap-2 group relative z-50 select-none"
+          >
             <div className="w-8 h-8 bg-royal-600 rounded-lg flex items-center justify-center shadow-lg shadow-royal-500/20 group-hover:scale-105 transition-transform">
               <span className="text-white font-bold text-lg">D</span>
             </div>
@@ -61,16 +73,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center space-x-8">
             {NAV_ITEMS.map((item) => (
-              <NavLink 
+              <a 
                 key={item.path} 
-                to={item.path}
-                onClick={(e) => handleSmoothScroll(e, item.path)}
-                className={({ isActive }) => 
-                  `text-sm font-medium transition-colors hover:text-white ${isActive && item.path !== '/#planos' ? 'text-royal-400' : 'text-dark-muted'}`
-                }
+                href={item.path} // Fallback nativo
+                onClick={(e) => handleNavigation(e, item.path)}
+                className={`text-sm font-medium transition-colors hover:text-white cursor-pointer ${location.pathname === item.path || (item.path.includes('#') && location.hash === `#${item.path.split('#')[1]}`) ? 'text-royal-400' : 'text-dark-muted'}`}
               >
                 {item.label}
-              </NavLink>
+              </a>
             ))}
             <Button size="sm" onClick={() => window.open('https://wa.me/5500000000000', '_blank')}>
               Agendar Reunião
@@ -80,28 +90,29 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {/* Mobile Menu Toggle */}
           <button 
             type="button"
-            className="md:hidden text-dark-muted hover:text-white p-2 relative z-50 touch-manipulation"
+            className="md:hidden text-dark-muted hover:text-white p-2 relative z-50 touch-manipulation active:bg-white/5 rounded-lg"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Menu"
+            aria-label={isMobileMenuOpen ? "Fechar Menu" : "Abrir Menu"}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Z-Index 39 (logo é 50) */}
+        {/* Usando display condicional para não interferir na DOM quando fechado */}
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 top-20 bg-dark-bg z-40 md:hidden flex flex-col p-4 space-y-4 overflow-y-auto animate-fade-in-down scroll-touch overscroll-contain">
+          <div className="fixed inset-0 top-20 bg-dark-bg z-39 md:hidden flex flex-col p-4 space-y-4 overflow-y-auto animate-fade-in scroll-touch overscroll-contain pb-24 border-t border-dark-border">
             {NAV_ITEMS.map((item) => (
-              <NavLink 
+              <a 
                 key={item.path} 
-                to={item.path} 
-                onClick={(e) => handleSmoothScroll(e, item.path)}
-                className="text-lg text-dark-muted hover:text-white font-medium py-4 border-b border-dark-border block"
+                href={item.path}
+                onClick={(e) => handleNavigation(e, item.path)}
+                className="text-lg text-dark-muted hover:text-white font-medium py-4 border-b border-dark-border block active:bg-dark-surface px-2 rounded transition-colors"
               >
                 {item.label}
-              </NavLink>
+              </a>
             ))}
-            <div className="pt-4 pb-20">
+            <div className="pt-4">
               <Button fullWidth size="lg" onClick={() => {
                 window.open('https://wa.me/5500000000000', '_blank');
                 setIsMobileMenuOpen(false);
@@ -114,7 +125,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow pt-20">
+      <main className="flex-grow pt-20 w-full overflow-x-hidden">
         {children}
       </main>
 
@@ -133,26 +144,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 Automação inteligente para negócios que valorizam o tempo e a eficiência.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto"><Instagram size={20} /></a>
-                <a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto"><Linkedin size={20} /></a>
+                <a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto p-1"><Instagram size={20} /></a>
+                <a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto p-1"><Linkedin size={20} /></a>
               </div>
             </div>
 
             <div>
               <h4 className="text-white font-semibold mb-4">Empresa</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/como-funciona" className="hover:text-royal-400 transition-colors pointer-events-auto">Como funciona</Link></li>
-                <li><a href="/#planos" onClick={(e) => handleSmoothScroll(e, '/#planos')} className="hover:text-royal-400 transition-colors cursor-pointer pointer-events-auto">Planos e Preços</a></li>
-                <li><Link to="/contato" className="hover:text-royal-400 transition-colors pointer-events-auto">Trabalhe conosco</Link></li>
+                <li><Link to="/como-funciona" className="hover:text-royal-400 transition-colors pointer-events-auto block py-1">Como funciona</Link></li>
+                <li><a href="/#planos" onClick={(e) => handleNavigation(e, '/#planos')} className="hover:text-royal-400 transition-colors cursor-pointer pointer-events-auto block py-1">Planos e Preços</a></li>
+                <li><Link to="/contato" className="hover:text-royal-400 transition-colors pointer-events-auto block py-1">Trabalhe conosco</Link></li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-white font-semibold mb-4">Legal</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto">Termos de Uso</a></li>
-                <li><a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto">Política de Privacidade</a></li>
-                <li><a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto">SLA</a></li>
+                <li><a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto block py-1">Termos de Uso</a></li>
+                <li><a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto block py-1">Política de Privacidade</a></li>
+                <li><a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto block py-1">SLA</a></li>
               </ul>
             </div>
 
@@ -160,15 +171,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <h4 className="text-white font-semibold mb-4">Contato</h4>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-center gap-2">
-                  <MessageCircle size={16} className="text-teal-400" />
+                  <MessageCircle size={16} className="text-teal-400 flex-shrink-0" />
                   <span>(11) 99999-9999</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Mail size={16} className="text-teal-400" />
+                  <Mail size={16} className="text-teal-400 flex-shrink-0" />
                   <span>contato@devpoint.com.br</span>
                 </li>
                 <li>
-                  <button type="button" onClick={openChat} className="text-royal-400 hover:text-white flex items-center gap-1 group transition-colors touch-manipulation pointer-events-auto">
+                  <button type="button" onClick={openChat} className="text-royal-400 hover:text-white flex items-center gap-1 group transition-colors touch-manipulation pointer-events-auto py-1">
                     Falar com IA <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform"/>
                   </button>
                 </li>

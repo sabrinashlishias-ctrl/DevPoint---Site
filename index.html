@@ -2,7 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
     <title>DevPoint | Automação e Agendamento Inteligente</title>
     <meta name="description" content="Automação de atendimento via WhatsApp e agendamento com IA. Otimize seu tempo e não perca leads." />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -45,11 +45,20 @@
       }
     </script>
     <style>
-      body {
+      html, body {
+        height: 100%;
+        background-color: #070B14;
         font-family: 'Inter', sans-serif;
         -webkit-font-smoothing: antialiased;
-        background-color: #070B14;
         color: #E2E8F0;
+        overflow-x: hidden;
+      }
+      /* Fallback crítico para garantir que o root ocupe a tela */
+      #root {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        min-height: 100dvh;
       }
       .hide-scrollbar::-webkit-scrollbar {
         display: none;
@@ -58,9 +67,30 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
       }
-      /* Subtle glow for dark mode */
       .glow-text {
         text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+      }
+      /* Initial Loader Styles (HTML only) */
+      .initial-loader {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-color: #070B14;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(59, 130, 246, 0.3);
+        border-radius: 50%;
+        border-top-color: #3b82f6;
+        animation: spin 1s ease-in-out infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
       }
     </style>
   <script type="importmap">
@@ -79,7 +109,24 @@
 </script>
 </head>
   <body class="bg-dark-bg text-dark-text selection:bg-royal-500/30">
-    <div id="root"></div>
+    <div id="root">
+       <!-- Fallback content if React fails to load immediately -->
+       <div class="initial-loader" id="initial-loader">
+          <div class="spinner"></div>
+       </div>
+    </div>
     <script type="module" src="/index.tsx"></script>
+    <script>
+      // Remove loader when app loads or fails safe
+      window.onload = function() {
+        setTimeout(() => {
+          const loader = document.getElementById('initial-loader');
+          if(loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 500);
+          }
+        }, 500);
+      }
+    </script>
   </body>
 </html>

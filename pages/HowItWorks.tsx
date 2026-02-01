@@ -14,27 +14,33 @@ const HowItWorks: React.FC = () => {
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    // Safety check for SSR or environments without IntersectionObserver
+    // CAMADA 2: JS Progressive Enhancement
+    // Se não houver suporte ou ocorrer erro, elementos já estão visíveis por padrão (sem classe opacity-0 no HTML inicial)
     if (!('IntersectionObserver' in window)) return;
 
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('opacity-100', 'translate-y-0');
-            entry.target.classList.remove('opacity-0', 'translate-y-12');
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }
-    );
+    try {
+        observerRef.current = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('opacity-100', 'translate-y-0');
+                entry.target.classList.remove('opacity-0', 'translate-y-12');
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }
+        );
 
-    const elements = document.querySelectorAll('.animate-on-scroll');
-    elements.forEach((el) => {
-        // Init state via JS ensures content is visible if JS fails/is slow
-        el.classList.add('opacity-0', 'translate-y-12', 'transition-all', 'duration-700', 'ease-out');
-        observerRef.current?.observe(el);
-    });
+        const elements = document.querySelectorAll('.animate-on-scroll');
+        elements.forEach((el) => {
+            // APLICAR estado inicial de animação SOMENTE AQUI
+            // Se JS falhar antes, o elemento fica visível (fallback)
+            el.classList.add('opacity-0', 'translate-y-12', 'transition-all', 'duration-700', 'ease-out');
+            observerRef.current?.observe(el);
+        });
+    } catch (e) {
+        console.warn("Animation observer failed, fallback to static content", e);
+    }
 
     return () => observerRef.current?.disconnect();
   }, []);
@@ -64,6 +70,7 @@ const HowItWorks: React.FC = () => {
               {PROCESS_STEPS.map((step, idx) => (
                 <div 
                     key={idx} 
+                    // Removido classes de estado inicial do HTML. JS adiciona 'opacity-0' depois.
                     className={`
                         animate-on-scroll
                         relative flex flex-col md:flex-row items-center md:justify-between w-full
@@ -81,7 +88,7 @@ const HowItWorks: React.FC = () => {
                            w-14 h-14 rounded-full bg-[#070B14] border border-dark-border shadow-2xl flex items-center justify-center relative z-10
                            group-hover:scale-110 transition-transform duration-300
                        `}>
-                           <div className={`absolute inset-0 rounded-full opacity-20 ${idx % 2 === 0 ? 'bg-royal-500 blur-md' : 'bg-teal-500 blur-md'}`}></div>
+                           <div className={`absolute inset-0 rounded-full opacity-20 ${idx % 2 === 0 ? 'bg-royal-500 blur-md' : 'bg-teal-500 blur-md'} pointer-events-none`}></div>
                            <span className={`text-lg font-bold ${idx % 2 === 0 ? 'text-royal-400' : 'text-teal-400'}`}>{idx + 1}</span>
                        </div>
                     </div>
@@ -97,8 +104,8 @@ const HowItWorks: React.FC = () => {
                            shadow-lg hover:shadow-2xl hover:border-white/10 transition-all duration-300
                            hover:-translate-y-1 z-10
                        `}>
-                          {/* Top Highlight Line */}
-                          <div className={`absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent ${idx % 2 === 0 ? 'via-royal-500/50' : 'via-teal-500/50'} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                          {/* Top Highlight Line - Pointer events none */}
+                          <div className={`absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent ${idx % 2 === 0 ? 'via-royal-500/50' : 'via-teal-500/50'} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}></div>
 
                           <div className="mb-5 inline-flex items-center justify-center p-3 rounded-xl bg-dark-bg border border-dark-border shadow-inner relative z-30">
                              {iconMap[step.iconName]}
@@ -120,7 +127,7 @@ const HowItWorks: React.FC = () => {
          <div className="animate-on-scroll mt-8">
              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0B1221] p-10 md:p-16 text-center shadow-2xl group">
                 
-                {/* Background Decor */}
+                {/* Background Decor - Pointer events none */}
                 <div className="absolute inset-0 bg-gradient-to-b from-royal-900/5 to-transparent pointer-events-none"></div>
                 <div className="absolute -top-24 -right-24 w-64 h-64 bg-royal-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-royal-500/20 transition-colors duration-700"></div>
                 <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-teal-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-teal-500/20 transition-colors duration-700"></div>
