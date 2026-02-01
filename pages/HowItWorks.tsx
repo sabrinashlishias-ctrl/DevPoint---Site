@@ -33,7 +33,7 @@ const HowItWorks: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-dark-bg pb-24">
+    <div className="min-h-[100dvh] bg-dark-bg pb-24">
       {/* Header */}
       <div className="bg-dark-surface/50 backdrop-blur-md border-b border-dark-border py-20 md:py-28 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">

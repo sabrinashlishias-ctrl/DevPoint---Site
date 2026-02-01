@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, ChevronRight, BarChart2, Zap, Settings, ArrowRight, Sparkles, Clock, Calendar } from 'lucide-react';
 import Button from '../components/Button';
 import { PLANS, FAQS } from '../constants';
 import { useChat } from '../context/ChatContext';
-import AronChatSection from '../components/AronChatSection';
+import LoadingSpinner from '../components/LoadingSpinner';
+
+// Lazy load the AI Chat section to avoid loading @google/genai on initial paint
+const AronChatSection = lazy(() => import('../components/AronChatSection'));
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -269,8 +272,10 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Aron Chat Section */}
-      <AronChatSection />
+      {/* Aron Chat Section (Lazy Loaded) */}
+      <Suspense fallback={<LoadingSpinner />}>
+        <AronChatSection />
+      </Suspense>
 
       {/* Cases Section Placeholder */}
       <section className="py-20 bg-dark-bg border-y border-dark-border">

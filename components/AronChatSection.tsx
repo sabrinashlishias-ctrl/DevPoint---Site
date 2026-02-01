@@ -68,20 +68,15 @@ const AronChatSection: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const chatSessionRef = useRef<Chat | null>(null);
 
+  // FIX: Only use overflow hidden, NEVER position fixed on body for mobile modals to prevent scroll jumping
   useEffect(() => {
     if (isExpanded) {
       document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
     } else {
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
     }
     return () => {
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
     };
   }, [isExpanded]);
 
@@ -89,7 +84,6 @@ const AronChatSection: React.FC = () => {
     const initChat = async () => {
       try {
         if (!process.env.API_KEY) {
-          // Silent fail for static demo - fallback handled in handleSendMessage
           return;
         }
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -150,7 +144,6 @@ const AronChatSection: React.FC = () => {
         const result = await chatSessionRef.current.sendMessage({ message: text });
         if (result.text) responseText = result.text;
       } else {
-        // Fallback natural response (Mock personality)
         await new Promise(resolve => setTimeout(resolve, 1500));
         const lower = text.toLowerCase();
         
@@ -169,7 +162,6 @@ const AronChatSection: React.FC = () => {
 
     } catch (error) {
       console.error(error);
-      // Fallback error message (Natural language, no tech jargon)
       setMessages(prev => [...prev, { id: Date.now().toString(), role: 'aron', content: "Peço desculpas, tive um breve lapso de atenção. Poderia repetir sua pergunta, por favor?" }]);
       setCurrentSuggestions(previousSuggestions);
     } finally {
@@ -236,16 +228,17 @@ const AronChatSection: React.FC = () => {
                 <button 
                   type="button"
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="p-3 text-slate-400 hover:text-white rounded-full lg:hidden touch-manipulation active:bg-white/10"
+                  className="p-3 text-slate-400 hover:text-white rounded-full lg:hidden touch-manipulation active:bg-white/10 pointer-events-auto"
                 >
                   {isExpanded ? <Minimize2 size={24} /> : <Maximize2 size={24} />}
                 </button>
               </div>
 
               {/* Messages */}
+              {/* Added scroll-touch and overscroll-contain via class or style */}
               <div 
                 ref={scrollRef}
-                className="flex-1 overflow-y-auto p-4 space-y-5 bg-[#080C14] overscroll-contain"
+                className="flex-1 overflow-y-auto p-4 space-y-5 bg-[#080C14] scroll-touch overscroll-contain"
               >
                 {messages.map((msg) => (
                   <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -320,7 +313,7 @@ const AronChatSection: React.FC = () => {
                         <button 
                           type="button"
                           onClick={() => setIsExpanded(false)} 
-                          className="flex items-center gap-2 text-xs uppercase font-bold text-slate-500 py-3 px-6 rounded-full hover:bg-dark-surface transition-colors touch-manipulation border border-transparent active:border-dark-border"
+                          className="flex items-center gap-2 text-xs uppercase font-bold text-slate-500 py-3 px-6 rounded-full hover:bg-dark-surface transition-colors touch-manipulation border border-transparent active:border-dark-border pointer-events-auto"
                         >
                            <ChevronDown size={14}/> Recolher Chat
                         </button>

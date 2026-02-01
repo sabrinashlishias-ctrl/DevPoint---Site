@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
-import HomePage from './pages/Home';
-import PlanDetail from './pages/PlanDetail';
-import HowItWorks from './pages/HowItWorks';
-import ContactPage from './pages/Contact';
 import { ChatProvider } from './context/ChatContext';
+import LoadingSpinner from './components/LoadingSpinner';
+
+// Lazy load pages to split bundles
+const HomePage = lazy(() => import('./pages/Home'));
+const PlanDetail = lazy(() => import('./pages/PlanDetail'));
+const HowItWorks = lazy(() => import('./pages/HowItWorks'));
+const ContactPage = lazy(() => import('./pages/Contact'));
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -25,12 +28,14 @@ const App: React.FC = () => {
       <Router>
         <ScrollToTop />
         <Layout>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/planos/:id" element={<PlanDetail />} />
-            <Route path="/como-funciona" element={<HowItWorks />} />
-            <Route path="/contato" element={<ContactPage />} />
-          </Routes>
+          <Suspense fallback={<LoadingSpinner fullScreen />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/planos/:id" element={<PlanDetail />} />
+              <Route path="/como-funciona" element={<HowItWorks />} />
+              <Route path="/contato" element={<ContactPage />} />
+            </Routes>
+          </Suspense>
         </Layout>
       </Router>
     </ChatProvider>

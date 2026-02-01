@@ -48,7 +48,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col bg-dark-bg text-dark-text">
       {/* Header */}
-      {/* Mobile Optimization: Solid background on mobile, blur only on desktop to prevent scroll lag */}
       <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${isHome ? 'bg-dark-bg md:bg-dark-bg/80 md:backdrop-blur-md border-b border-dark-border' : 'bg-dark-bg border-b border-dark-border'}`}>
         <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
           {/* Logo */}
@@ -91,7 +90,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 top-20 bg-dark-bg z-40 md:hidden flex flex-col p-4 space-y-4 overflow-y-auto animate-fade-in-down">
+          <div className="fixed inset-0 top-20 bg-dark-bg z-40 md:hidden flex flex-col p-4 space-y-4 overflow-y-auto animate-fade-in-down scroll-touch overscroll-contain">
             {NAV_ITEMS.map((item) => (
               <NavLink 
                 key={item.path} 
@@ -102,7 +101,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {item.label}
               </NavLink>
             ))}
-            <div className="pt-4">
+            <div className="pt-4 pb-20">
               <Button fullWidth size="lg" onClick={() => {
                 window.open('https://wa.me/5500000000000', '_blank');
                 setIsMobileMenuOpen(false);
@@ -134,26 +133,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 Automação inteligente para negócios que valorizam o tempo e a eficiência.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="hover:text-royal-400 transition-colors"><Instagram size={20} /></a>
-                <a href="#" className="hover:text-royal-400 transition-colors"><Linkedin size={20} /></a>
+                <a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto"><Instagram size={20} /></a>
+                <a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto"><Linkedin size={20} /></a>
               </div>
             </div>
 
             <div>
               <h4 className="text-white font-semibold mb-4">Empresa</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/como-funciona" className="hover:text-royal-400 transition-colors">Como funciona</Link></li>
-                <li><a href="/#planos" onClick={(e) => handleSmoothScroll(e, '/#planos')} className="hover:text-royal-400 transition-colors cursor-pointer">Planos e Preços</a></li>
-                <li><Link to="/contato" className="hover:text-royal-400 transition-colors">Trabalhe conosco</Link></li>
+                <li><Link to="/como-funciona" className="hover:text-royal-400 transition-colors pointer-events-auto">Como funciona</Link></li>
+                <li><a href="/#planos" onClick={(e) => handleSmoothScroll(e, '/#planos')} className="hover:text-royal-400 transition-colors cursor-pointer pointer-events-auto">Planos e Preços</a></li>
+                <li><Link to="/contato" className="hover:text-royal-400 transition-colors pointer-events-auto">Trabalhe conosco</Link></li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-white font-semibold mb-4">Legal</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-royal-400 transition-colors">Termos de Uso</a></li>
-                <li><a href="#" className="hover:text-royal-400 transition-colors">Política de Privacidade</a></li>
-                <li><a href="#" className="hover:text-royal-400 transition-colors">SLA</a></li>
+                <li><a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto">Termos de Uso</a></li>
+                <li><a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto">Política de Privacidade</a></li>
+                <li><a href="#" className="hover:text-royal-400 transition-colors pointer-events-auto">SLA</a></li>
               </ul>
             </div>
 
@@ -169,7 +168,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   <span>contato@devpoint.com.br</span>
                 </li>
                 <li>
-                  <button type="button" onClick={openChat} className="text-royal-400 hover:text-white flex items-center gap-1 group transition-colors touch-manipulation">
+                  <button type="button" onClick={openChat} className="text-royal-400 hover:text-white flex items-center gap-1 group transition-colors touch-manipulation pointer-events-auto">
                     Falar com IA <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform"/>
                   </button>
                 </li>

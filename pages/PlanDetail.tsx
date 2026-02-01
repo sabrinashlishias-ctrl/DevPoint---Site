@@ -18,7 +18,7 @@ const PlanDetail: React.FC = () => {
 
   if (!plan) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-dark-bg">
+      <div className="min-h-[100dvh] flex flex-col items-center justify-center bg-dark-bg">
         <h2 className="text-2xl font-bold text-white mb-4">Plano não encontrado</h2>
         <Button onClick={() => navigate('/')}>Voltar para Início</Button>
       </div>
@@ -26,7 +26,7 @@ const PlanDetail: React.FC = () => {
   }
 
   return (
-    <div className="bg-dark-bg min-h-screen pb-20">
+    <div className="bg-dark-bg min-h-[100dvh] pb-20">
       {/* Header Info */}
       <div className="bg-dark-surface border-b border-dark-border pt-10 pb-16">
         <div className="container mx-auto px-4 md:px-6">

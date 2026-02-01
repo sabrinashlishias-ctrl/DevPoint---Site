@@ -1,5 +1,0 @@
-Build Date: 2025-10-27 16:45:00
-Version: 1.0.6-stable-redirect-fix
-Target: Netlify Static (Drop dist folder)
-Status: Ready for deployment
-Includes: _redirects, index.html (pre-rendered), compiled assets

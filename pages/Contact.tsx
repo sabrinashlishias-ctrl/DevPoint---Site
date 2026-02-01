@@ -23,7 +23,7 @@ const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-bg py-20">
+    <div className="min-h-[100dvh] bg-dark-bg py-20">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-16">
            <h1 className="text-4xl font-bold text-white mb-4">Fale Conosco</h1>
@@ -33,7 +33,7 @@ const ContactPage: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto bg-dark-surface rounded-3xl shadow-xl shadow-black/40 border border-dark-border overflow-hidden">
            {/* Info Side */}
            <div className="bg-royal-700 p-10 text-white flex flex-col justify-between relative overflow-hidden">
-              <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-royal-500 rounded-full blur-3xl opacity-20 z-0"></div>
+              <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-royal-500 rounded-full blur-3xl opacity-20 z-0 pointer-events-none"></div>
               <div className="relative z-10">
                 <h3 className="text-2xl font-bold mb-6">Informações de Contato</h3>
                 <div className="space-y-6">
