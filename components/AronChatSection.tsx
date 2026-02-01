@@ -125,7 +125,8 @@ const AronChatSection: React.FC = () => {
   const handleSendMessage = async (text: string) => {
     if (!text.trim()) return;
 
-    if (window.innerWidth < 1024) {
+    // Safety check for window
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
         setIsExpanded(true);
     }
 

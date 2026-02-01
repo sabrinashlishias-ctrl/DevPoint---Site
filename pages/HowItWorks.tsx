@@ -14,6 +14,9 @@ const HowItWorks: React.FC = () => {
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
+    // Safety check for SSR or environments without IntersectionObserver
+    if (!('IntersectionObserver' in window)) return;
+
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -27,7 +30,11 @@ const HowItWorks: React.FC = () => {
     );
 
     const elements = document.querySelectorAll('.animate-on-scroll');
-    elements.forEach((el) => observerRef.current?.observe(el));
+    elements.forEach((el) => {
+        // Init state via JS ensures content is visible if JS fails/is slow
+        el.classList.add('opacity-0', 'translate-y-12', 'transition-all', 'duration-700', 'ease-out');
+        observerRef.current?.observe(el);
+    });
 
     return () => observerRef.current?.disconnect();
   }, []);
@@ -58,7 +65,7 @@ const HowItWorks: React.FC = () => {
                 <div 
                     key={idx} 
                     className={`
-                        animate-on-scroll opacity-0 translate-y-12 transition-all duration-700 ease-out
+                        animate-on-scroll
                         relative flex flex-col md:flex-row items-center md:justify-between w-full
                         ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''}
                     `}
@@ -80,7 +87,6 @@ const HowItWorks: React.FC = () => {
                     </div>
 
                     {/* Content Card */}
-                    {/* pl-24 on mobile ensures card content starts after the marker (marker is at left-8/32px, card starts at 96px) */}
                     <div className={`
                         w-full pl-24 md:pl-0 
                         md:w-[calc(50%-3rem)]
@@ -98,7 +104,6 @@ const HowItWorks: React.FC = () => {
                              {iconMap[step.iconName]}
                           </div>
                           
-                          {/* z-30 ensures text is above any background decorations. leading-snug prevents clipping. */}
                           <h3 className="text-xl font-bold text-white mb-3 tracking-tight leading-snug relative z-30 break-words">{step.title}</h3>
                           <p className="text-dark-muted leading-relaxed text-sm md:text-base relative z-30">
                             {step.description}
@@ -112,7 +117,7 @@ const HowItWorks: React.FC = () => {
          </div>
 
          {/* CTA Final */}
-         <div className="animate-on-scroll opacity-0 translate-y-12 transition-all duration-700 ease-out delay-200 mt-8">
+         <div className="animate-on-scroll mt-8">
              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0B1221] p-10 md:p-16 text-center shadow-2xl group">
                 
                 {/* Background Decor */}
