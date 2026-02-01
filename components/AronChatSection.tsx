@@ -83,14 +83,12 @@ const AronChatSection: React.FC = () => {
   useEffect(() => {
     const initChat = async () => {
       try {
-        // Safe check for process.env
-        const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : undefined;
-
-        if (!apiKey) {
+        if (!process.env.API_KEY) {
           console.warn("API_KEY not found. Chat will run in mock mode.");
           return;
         }
-        const ai = new GoogleGenAI({ apiKey });
+        
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         chatSessionRef.current = ai.chats.create({
           model: 'gemini-3-flash-preview',
           config: {

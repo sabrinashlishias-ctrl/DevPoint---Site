@@ -69,7 +69,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   // But ensure NO overflow-y restriction is applied here
   // FIX: Added relative and z-1 to main to ensure content is above background decorations
   return (
-    <div className="flex flex-col min-h-[100dvh] w-full bg-dark-bg text-dark-text relative selection:bg-royal-500/30 overflow-x-hidden">
+    <div className="flex flex-col min-h-[100dvh] w-full bg-dark-bg text-dark-text relative selection:bg-royal-500/30">
       {/* Header - Z-Index 40 para ficar acima do conteúdo mas abaixo de modais críticos */}
       <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${isHome ? 'bg-dark-bg/90 backdrop-blur-md border-b border-dark-border' : 'bg-dark-bg border-b border-dark-border'}`}>
         <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">

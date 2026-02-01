@@ -22,7 +22,7 @@ const HomePage: React.FC = () => {
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-royal-900/30 rounded-full blur-3xl opacity-40 z-0 pointer-events-none select-none"></div>
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-teal-900/30 rounded-full blur-3xl opacity-30 z-0 pointer-events-none select-none"></div>
         
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
+        <div className="container mx-auto px-4 md:px-6 relative z-20 pointer-events-auto">
           <div className="max-w-4xl mx-auto text-center mb-16">
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-royal-900/20 border border-royal-500/20 text-royal-300 text-xs font-semibold tracking-wide uppercase mb-6 shadow-sm shadow-royal-900/20">
               <span className="w-2 h-2 rounded-full bg-teal-400 mr-2 animate-pulse shadow-[0_0_8px_rgba(45,212,191,0.6)]"></span>
@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
             <p className="text-lg md:text-xl text-dark-muted mb-10 max-w-2xl mx-auto leading-relaxed">
               WhatsApp com IA, integrações robustas e rotinas automatizadas para negócios que dependem de uma agenda organizada.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pointer-events-auto">
               <Button size="lg" onClick={() => window.open('https://wa.me/5500000000000', '_blank')}>
                 Agendar uma reunião
               </Button>

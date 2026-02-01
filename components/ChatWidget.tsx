@@ -88,12 +88,15 @@ const ChatWidget: React.FC = () => {
 
   return (
     // FIX: Added w-auto h-auto and max-w-full to ensure container doesn't block clicks outside itself
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none w-auto h-auto max-w-full">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none w-auto h-auto max-w-[calc(100vw-2rem)]">
       {/* Chat Window */}
       <div 
         className={`
           mb-4 w-[90vw] md:w-96 bg-dark-surface rounded-2xl shadow-2xl shadow-black/50 border border-dark-border overflow-hidden transition-all duration-300 origin-bottom-right pointer-events-auto
-          ${isChatOpen ? 'scale-100 opacity-100' : 'scale-90 opacity-0 translate-y-10 pointer-events-none'}
+          ${isChatOpen 
+            ? 'scale-100 opacity-100 visible' 
+            : 'scale-90 opacity-0 translate-y-10 pointer-events-none invisible delay-200'
+          }
         `}
         style={{ maxHeight: '600px', height: '70vh', overscrollBehavior: 'contain' }}
       >
