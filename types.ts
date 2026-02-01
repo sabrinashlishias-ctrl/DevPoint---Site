@@ -1,3 +1,4 @@
+
 export interface Plan {
   id: string;
   name: string;
@@ -28,4 +29,10 @@ export interface ChatMessage {
   text: string;
   type?: 'text' | 'options';
   options?: string[];
+}
+
+export interface ProcessStep {
+  iconName: 'search' | 'code' | 'check-circle' | 'sliders';
+  title: string;
+  description: string;
 }

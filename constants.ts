@@ -1,4 +1,5 @@
-import { Plan, FaqItem, NavItem } from './types';
+
+import { Plan, FaqItem, NavItem, ProcessStep } from './types';
 
 export const PLANS: Plan[] = [
   {
@@ -120,4 +121,27 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Planos', path: '/#planos' },
   { label: 'Como funciona', path: '/como-funciona' },
   { label: 'Contato', path: '/contato' },
+];
+
+export const PROCESS_STEPS: ProcessStep[] = [
+  {
+    iconName: 'search',
+    title: "1. Diagnóstico e Alinhamento",
+    description: "Primeiro, entendemos como você atende hoje. Mapeamos as perguntas frequentes, os horários de pico e onde os leads se perdem."
+  },
+  {
+    iconName: 'code',
+    title: "2. Implementação e Integração",
+    description: "Nossa equipe configura o fluxo no WhatsApp, conecta com seu Google Calendar e CRM. Configuramos a IA e testamos todos os cenários."
+  },
+  {
+    iconName: 'check-circle',
+    title: "3. Validação e Treinamento",
+    description: "Entregamos o sistema para você testar. Fazemos ajustes finos nos textos e ensinamos sua equipe a assumir o atendimento quando necessário."
+  },
+  {
+    iconName: 'sliders',
+    title: "4. Manutenção Contínua",
+    description: "Após o 'Go Live', entramos no modo manutenção. Monitoramos a estabilidade 24/7 e realizamos ajustes mensais conforme seu negócio evolui."
+  }
 ];

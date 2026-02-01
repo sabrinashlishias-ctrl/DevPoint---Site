@@ -15,9 +15,32 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const { openChat } = useChat();
 
-  const handleNavClick = () => {
+  // Smart Navigation Handler
+  // Intercepts anchor links (#) to provide smooth scrolling if on the correct page
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    // If it's an anchor link for the home page (e.g., /#planos)
+    if (path.startsWith('/#')) {
+      const hash = path.substring(2); // remove "/#"
+      
+      // If we are already on the home page (or root), prevent default router nav and scroll
+      if (location.pathname === '/') {
+        e.preventDefault();
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          // Optionally update URL without reload
+          window.history.pushState(null, '', `/#${hash}`);
+        }
+        setIsMobileMenuOpen(false);
+        return;
+      }
+    }
+    
+    // Default behavior for other links (change route, scroll top)
     setIsMobileMenuOpen(false);
-    window.scrollTo(0, 0);
+    if (!path.includes('#')) {
+      window.scrollTo(0, 0);
+    }
   };
 
   const isHome = location.pathname === '/';
@@ -29,7 +52,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${isHome ? 'bg-dark-bg md:bg-dark-bg/80 md:backdrop-blur-md border-b border-dark-border' : 'bg-dark-bg border-b border-dark-border'}`}>
         <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" onClick={handleNavClick} className="flex items-center gap-2 group relative z-50">
+          <Link to="/" onClick={(e) => handleSmoothScroll(e, '/')} className="flex items-center gap-2 group relative z-50">
             <div className="w-8 h-8 bg-royal-600 rounded-lg flex items-center justify-center shadow-lg shadow-royal-500/20 group-hover:scale-105 transition-transform">
               <span className="text-white font-bold text-lg">D</span>
             </div>
@@ -42,6 +65,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <NavLink 
                 key={item.path} 
                 to={item.path}
+                onClick={(e) => handleSmoothScroll(e, item.path)}
                 className={({ isActive }) => 
                   `text-sm font-medium transition-colors hover:text-white ${isActive && item.path !== '/#planos' ? 'text-royal-400' : 'text-dark-muted'}`
                 }
@@ -72,7 +96,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <NavLink 
                 key={item.path} 
                 to={item.path} 
-                onClick={handleNavClick}
+                onClick={(e) => handleSmoothScroll(e, item.path)}
                 className="text-lg text-dark-muted hover:text-white font-medium py-4 border-b border-dark-border block"
               >
                 {item.label}
@@ -119,7 +143,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <h4 className="text-white font-semibold mb-4">Empresa</h4>
               <ul className="space-y-2 text-sm">
                 <li><Link to="/como-funciona" className="hover:text-royal-400 transition-colors">Como funciona</Link></li>
-                <li><Link to="/#planos" className="hover:text-royal-400 transition-colors">Planos e Preços</Link></li>
+                <li><a href="/#planos" onClick={(e) => handleSmoothScroll(e, '/#planos')} className="hover:text-royal-400 transition-colors cursor-pointer">Planos e Preços</a></li>
                 <li><Link to="/contato" className="hover:text-royal-400 transition-colors">Trabalhe conosco</Link></li>
               </ul>
             </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, ChevronRight, BarChart2, Zap, Settings, ArrowRight } from 'lucide-react';
+import { Check, ChevronRight, BarChart2, Zap, Settings, ArrowRight, Sparkles, Clock, Calendar } from 'lucide-react';
 import Button from '../components/Button';
 import { PLANS, FAQS } from '../constants';
 import { useChat } from '../context/ChatContext';
@@ -24,7 +24,7 @@ const HomePage: React.FC = () => {
         <div className="hidden md:block absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-teal-900/30 rounded-full blur-3xl opacity-30 z-0 pointer-events-none"></div>
         
         <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-4xl mx-auto text-center mb-16">
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-royal-900/20 border border-royal-500/20 text-royal-300 text-xs font-semibold tracking-wide uppercase mb-6 shadow-sm shadow-royal-900/20">
               <span className="w-2 h-2 rounded-full bg-teal-400 mr-2 animate-pulse shadow-[0_0_8px_rgba(45,212,191,0.6)]"></span>
               Automação Inteligente 2.0
@@ -48,45 +48,100 @@ const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Abstract Tech Graphic */}
-          <div className="mt-16 relative mx-auto max-w-5xl">
-             <div className="bg-dark-surface rounded-2xl shadow-2xl shadow-black/50 border border-dark-border p-2 md:p-4 overflow-hidden pointer-events-none">
-                <div className="bg-[#05080F] rounded-xl border border-dark-border aspect-[16/7] relative overflow-hidden flex items-center justify-center">
-                   {/* Mock UI graphic */}
-                   <div className="grid grid-cols-3 gap-8 w-full max-w-3xl px-8 opacity-90">
-                      <div className="bg-dark-surface p-4 rounded-lg shadow-lg border border-dark-border flex flex-col gap-3">
-                        <div className="h-2 w-20 bg-slate-800 rounded"></div>
-                        <div className="h-8 w-full bg-royal-900/20 rounded border-l-4 border-royal-500"></div>
-                        <div className="h-2 w-full bg-slate-800/50 rounded"></div>
-                      </div>
-                      <div className="bg-dark-surface p-4 rounded-lg shadow-lg border border-dark-border flex flex-col gap-3 mt-8">
-                        <div className="flex justify-between">
-                          <div className="h-2 w-16 bg-slate-800 rounded"></div>
-                          <div className="h-4 w-4 bg-teal-500 rounded-full shadow-[0_0_10px_rgba(20,184,166,0.5)]"></div>
+          {/* Visual Automation Composition - Consistent Premium UI */}
+          <div className="relative mx-auto max-w-5xl px-4">
+             {/* Main Container */}
+             <div className="bg-[#05080F] rounded-3xl border border-dark-border shadow-2xl overflow-hidden relative group">
+                
+                {/* Subtle Ambient Glow (Replaces Dots) */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-royal-900/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+                <div className="relative z-10 py-16 md:py-24 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0">
+                    
+                    {/* Connecting Beam (Desktop Only) */}
+                    <div className="hidden md:block absolute top-1/2 left-[25%] right-[25%] h-[1px] bg-gradient-to-r from-transparent via-royal-500/20 to-transparent -translate-y-1/2 z-0"></div>
+
+                    {/* CARD 1: Chat UI (Consistent Style) */}
+                    <div className="relative w-72 h-80 bg-dark-surface/50 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden z-10 transform transition-transform hover:-translate-y-1 duration-500 hover:shadow-royal-500/10">
+                        {/* Header */}
+                        <div className="h-12 border-b border-white/5 flex items-center px-4 gap-3 bg-white/5">
+                            <div className="flex gap-1.5">
+                                <div className="w-2.5 h-2.5 rounded-full bg-white/10"></div>
+                                <div className="w-2.5 h-2.5 rounded-full bg-white/10"></div>
+                            </div>
                         </div>
-                        <div className="h-2 w-full bg-slate-800/50 rounded"></div>
-                        <div className="h-2 w-2/3 bg-slate-800/50 rounded"></div>
-                      </div>
-                       <div className="bg-dark-surface p-4 rounded-lg shadow-lg border border-dark-border flex flex-col gap-3">
-                        <div className="h-2 w-20 bg-slate-800 rounded"></div>
-                        <div className="space-y-2">
-                           <div className="flex items-center gap-2">
-                              <div className="w-4 h-4 rounded-full border border-slate-700"></div>
-                              <div className="h-2 w-24 bg-slate-800/50 rounded"></div>
-                           </div>
-                           <div className="flex items-center gap-2">
-                              <div className="w-4 h-4 rounded-full bg-royal-600 shadow-sm"></div>
-                              <div className="h-2 w-20 bg-slate-800/50 rounded"></div>
-                           </div>
+                        {/* Chat Body */}
+                        <div className="p-5 flex flex-col gap-4 flex-1 justify-center">
+                            {/* User Bubble */}
+                            <div className="self-start bg-slate-800/50 border border-white/5 text-slate-300 px-4 py-3 rounded-2xl rounded-tl-none text-sm max-w-[85%] leading-relaxed">
+                                Gostaria de agendar para quinta-feira.
+                            </div>
+                            {/* System Bubble */}
+                            <div className="self-end bg-royal-600/90 text-white px-4 py-3 rounded-2xl rounded-tr-none text-sm max-w-[85%] leading-relaxed shadow-lg shadow-royal-900/20">
+                                Confirmado. O horário das 15:30 está livre?
+                            </div>
+                            {/* User Bubble */}
+                            <div className="self-start bg-slate-800/50 border border-white/5 text-slate-300 px-4 py-3 rounded-2xl rounded-tl-none text-sm max-w-[85%] leading-relaxed">
+                                Sim, perfeito.
+                            </div>
                         </div>
-                      </div>
-                   </div>
-                   {/* Connecting lines */}
-                   <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M200 150 Q 400 50 600 150" stroke="#3b82f6" strokeWidth="2" fill="none" strokeDasharray="5,5"/>
-                   </svg>
-                   {/* Gradient overlay */}
-                   <div className="absolute inset-0 bg-gradient-to-t from-[#05080F] to-transparent opacity-60 pointer-events-none"></div>
+                    </div>
+
+                    {/* CENTER: AI Logic Node */}
+                    <div className="relative z-20 mx-6 md:mx-12">
+                        <div className="absolute inset-0 bg-teal-500/10 blur-2xl rounded-full animate-pulse"></div>
+                        <div className="w-16 h-16 md:w-20 md:h-20 bg-[#0B1221] border border-royal-500/30 rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(59,130,246,0.15)] relative">
+                             <div className="absolute inset-1 border border-dashed border-royal-500/20 rounded-full animate-[spin_12s_linear_infinite]"></div>
+                             <Sparkles className="w-8 h-8 text-royal-400 fill-royal-400/10" />
+                        </div>
+                    </div>
+
+                    {/* CARD 2: Calendar UI (Consistent Style) */}
+                    <div className="relative w-72 h-80 bg-dark-surface/50 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden z-10 transform transition-transform hover:-translate-y-1 duration-500 hover:shadow-royal-500/10">
+                        {/* Header */}
+                        <div className="h-12 border-b border-white/5 flex items-center justify-between px-4 bg-white/5">
+                            <span className="text-white text-sm font-medium flex items-center gap-2">
+                                <Calendar size={14} className="text-teal-400"/> Outubro
+                            </span>
+                            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+                                <span className="text-[10px] text-white font-bold">27</span>
+                            </div>
+                        </div>
+                        {/* Body */}
+                        <div className="p-5 space-y-3 flex-1">
+                            <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-transparent opacity-40">
+                                <span className="text-xs text-slate-400 font-mono">14:00</span>
+                                <div className="h-1.5 w-16 bg-slate-600 rounded-full"></div>
+                            </div>
+                            
+                            {/* Highlighted Slot */}
+                            <div className="flex items-center justify-between gap-3 p-3 rounded-xl bg-royal-500/10 border border-royal-500/30 relative overflow-hidden group">
+                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-royal-500"></div>
+                                <div className="flex items-center gap-3 z-10">
+                                    <span className="text-xs text-white font-bold font-mono">15:30</span>
+                                    <span className="text-xs text-royal-200 font-medium">Reunião</span>
+                                </div>
+                                <div className="bg-royal-500 rounded-full p-1 z-10 shadow-lg shadow-royal-500/40">
+                                    <Check size={10} className="text-white" strokeWidth={3} />
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-transparent opacity-40">
+                                <span className="text-xs text-slate-400 font-mono">16:30</span>
+                                <div className="h-1.5 w-12 bg-slate-600 rounded-full"></div>
+                            </div>
+                            
+                             {/* Floating Notification */}
+                             <div className="mt-auto bg-[#0F172A] border border-white/10 p-3 rounded-xl flex items-center gap-3 shadow-lg">
+                                <div className="bg-teal-500/20 p-1.5 rounded-lg"><Clock size={12} className="text-teal-400"/></div>
+                                <div>
+                                    <div className="text-[10px] text-white font-medium leading-tight">Sincronizado</div>
+                                    <div className="text-[9px] text-slate-400 leading-tight">Agenda atualizada</div>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+
                 </div>
              </div>
           </div>
@@ -138,7 +193,8 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Plans */}
-      <section id="planos" className="py-24 bg-[#05080F]">
+      {/* ADDED scroll-mt-24 to handle fixed header offset */}
+      <section id="planos" className="py-24 bg-[#05080F] scroll-mt-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-white mb-4">Escolha o plano ideal</h2>

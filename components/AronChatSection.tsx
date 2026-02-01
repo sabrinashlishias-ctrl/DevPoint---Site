@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, Sparkles, Maximize2, Minimize2, ChevronDown, ArrowRight, X } from 'lucide-react';
+import { Send, Bot, Sparkles, Maximize2, Minimize2, ChevronDown } from 'lucide-react';
 import { GoogleGenAI, Chat } from "@google/genai";
 
 interface Message {
@@ -17,11 +17,38 @@ const SUGGESTIONS_MAP: Record<string, string[]> = {
 };
 
 const SYSTEM_INSTRUCTION = `
-Você é Aron, o agente de IA da DevPoint.
-Seu objetivo é guiar o usuário de forma breve e direta até o agendamento.
-Mantenha as respostas curtas (máximo 2 parágrafos).
-Se o usuário perguntar sobre planos, resuma as diferenças.
-Se o usuário quiser agendar, envie o link ou peça para clicar no botão de agendamento.
+Você é Aron, agente especialista da DevPoint.
+
+PERSONALIDADE:
+- Profissional, direto, educado e confiante.
+- Fala como um consultor humano, não como um robô.
+- Nunca usa termos técnicos internos (API, key, backend, erro, sistema, conexão).
+
+REGRAS ABSOLUTAS:
+1) NUNCA falar que criamos software, apps ou produtos digitais.
+2) NUNCA usar termos como "transformar sua ideia", "desenvolvimento de sistemas", "programação sob medida".
+3) SEMPRE deixar claro que vendemos AUTOMAÇÃO DE ATENDIMENTO.
+4) NUNCA mencionar API, backend, chave, erro técnico ou limitações internas.
+5) NUNCA dizer que "não consegue responder".
+
+O QUE OFERECEMOS:
+- Agente de IA humanizado no WhatsApp
+- Atendimento automático 24/7
+- Qualificação do lead
+- Agendamento automático integrado ao sistema do cliente
+- Redução de perda de leads
+
+PLANOS:
+- MVP: implantação base da automação (WhatsApp + IA + agendamento) — a partir de R$3.000
+- Profissional: fluxos mais avançados, personalização e integrações — a partir de R$5.000
+- Premium: automação completa, múltiplos fluxos, maior complexidade — a partir de R$8.000
+
+COMPORTAMENTO EM PERGUNTAS DE PREÇO:
+- Nunca dizer "depende de API".
+- Sempre responder algo como: "Consigo te orientar sim. Os projetos começam em R$3.000. Posso te ajudar a entender qual plano faz mais sentido."
+
+ENCERRAMENTO PADRÃO:
+- Sempre oferecer: "Quer que eu te ajude a escolher o plano ideal?" ou "Posso te explicar como funciona na prática."
 `;
 
 const AronChatSection: React.FC = () => {
@@ -29,7 +56,7 @@ const AronChatSection: React.FC = () => {
     {
       id: '1',
       role: 'aron',
-      content: 'Olá! Sou o Aron. Posso te ajudar a escolher o plano ideal para o seu negócio?'
+      content: 'Olá! Sou o Aron, especialista em automação da DevPoint. Como posso ajudar seu negócio a não perder mais leads?'
     }
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -41,7 +68,6 @@ const AronChatSection: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const chatSessionRef = useRef<Chat | null>(null);
 
-  // Reliable scroll locking
   useEffect(() => {
     if (isExpanded) {
       document.body.style.overflow = 'hidden';
@@ -63,7 +89,7 @@ const AronChatSection: React.FC = () => {
     const initChat = async () => {
       try {
         if (!process.env.API_KEY) {
-          console.warn("API_KEY not found.");
+          // Silent fail for static demo - fallback handled in handleSendMessage
           return;
         }
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -75,7 +101,7 @@ const AronChatSection: React.FC = () => {
           },
         });
       } catch (error) {
-        console.error("Failed to initialize chat:", error);
+        console.error("Chat init check:", error);
       }
     };
     initChat();
@@ -118,13 +144,23 @@ const AronChatSection: React.FC = () => {
     setCurrentSuggestions([]);
 
     try {
-      let responseText = "Um momento, estou verificando...";
+      let responseText = "";
+      
       if (chatSessionRef.current) {
         const result = await chatSessionRef.current.sendMessage({ message: text });
         if (result.text) responseText = result.text;
       } else {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        responseText = "Para te dar detalhes precisos, preciso da minha conexão. Mas posso te adiantar que nossos planos começam em R$ 3.000.";
+        // Fallback natural response (Mock personality)
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        const lower = text.toLowerCase();
+        
+        if (lower.includes('preço') || lower.includes('valor') || lower.includes('quanto')) {
+           responseText = "Consigo te orientar sim. Nossos projetos de automação começam em R$ 3.000 (Plano MVP). Se precisar de algo mais robusto com integrações complexas, temos o Plano Profissional a partir de R$ 5.000. Qual faz mais sentido para o seu momento?";
+        } else if (lower.includes('agendar') || lower.includes('reunião')) {
+           responseText = "Perfeito. Para agendarmos um diagnóstico e entendermos sua operação, basta clicar no botão 'Agendar Reunião' aqui no site. Vamos analisar seu fluxo atual.";
+        } else {
+           responseText = "Entendi. Como especialista em automação, posso te explicar como o agente de IA atende seus clientes 24/7 ou te ajudar a escolher o melhor plano. O que prefere?";
+        }
       }
 
       const aronMsg: Message = { id: (Date.now() + 1).toString(), role: 'aron', content: responseText };
@@ -133,7 +169,8 @@ const AronChatSection: React.FC = () => {
 
     } catch (error) {
       console.error(error);
-      setMessages(prev => [...prev, { id: Date.now().toString(), role: 'aron', content: "Tive um erro de conexão. Tente novamente." }]);
+      // Fallback error message (Natural language, no tech jargon)
+      setMessages(prev => [...prev, { id: Date.now().toString(), role: 'aron', content: "Peço desculpas, tive um breve lapso de atenção. Poderia repetir sua pergunta, por favor?" }]);
       setCurrentSuggestions(previousSuggestions);
     } finally {
       setIsTyping(false);
@@ -147,7 +184,7 @@ const AronChatSection: React.FC = () => {
 
   return (
     <section className="py-12 lg:py-20 bg-[#0A0F1A] border-y border-dark-border relative overflow-hidden">
-      {/* Background Decor - Disabled on mobile for performance */}
+      {/* Background Decor */}
       <div className="hidden md:block absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-10 left-10 w-64 h-64 bg-royal-900/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-80 h-80 bg-teal-900/10 rounded-full blur-3xl"></div>
@@ -184,7 +221,7 @@ const AronChatSection: React.FC = () => {
               ${isExpanded ? 'rounded-none lg:rounded-2xl' : 'rounded-2xl'}
             `}>
               
-              {/* Header - Solid background on mobile */}
+              {/* Header */}
               <div className="px-5 py-3 bg-dark-bg border-b border-dark-border flex items-center justify-between sticky top-0 z-20">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-royal-600 to-royal-900 flex items-center justify-center border border-white/10">
@@ -259,7 +296,7 @@ const AronChatSection: React.FC = () => {
                 )}
 
                 <form onSubmit={handleSubmit} className="px-4 pb-4 pt-1 relative z-40">
-                  <div className="flex gap-2 relative">
+                  <div className="relative w-full group">
                     <input
                       ref={inputRef}
                       type="text"
@@ -267,14 +304,14 @@ const AronChatSection: React.FC = () => {
                       onChange={(e) => setInputValue(e.target.value)}
                       placeholder="Digite sua mensagem..."
                       disabled={isTyping}
-                      className="w-full bg-dark-surface/50 border border-dark-border rounded-full pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-royal-500 focus:border-royal-500 placeholder-slate-600 transition-all disabled:opacity-50"
+                      className="w-full h-12 bg-dark-surface/80 border border-dark-border group-focus-within:border-royal-500/50 rounded-full pl-5 pr-14 text-sm text-white placeholder-slate-500 focus:outline-none transition-all disabled:opacity-50"
                     />
                     <button 
                       type="submit"
                       disabled={!inputValue.trim() || isTyping}
-                      className="absolute right-1.5 top-1.5 bottom-1.5 w-9 h-9 bg-royal-600 hover:bg-royal-500 text-white rounded-full flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-lg touch-manipulation"
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 w-9 h-9 bg-royal-600 hover:bg-royal-500 disabled:bg-slate-700 disabled:text-slate-500 text-white rounded-full flex items-center justify-center transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 touch-manipulation z-10"
                     >
-                      <Send size={16} />
+                      <Send size={18} className="ml-0.5" />
                     </button>
                   </div>
                   
