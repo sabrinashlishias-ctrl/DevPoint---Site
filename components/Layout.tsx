@@ -73,7 +73,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Header - Z-Index 40 para ficar acima do conteúdo mas abaixo de modais críticos */}
       <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${isHome ? 'bg-dark-bg/90 backdrop-blur-md border-b border-dark-border' : 'bg-dark-bg border-b border-dark-border'}`}>
         <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo - Z-Index 50 to stay above mobile menu background */}
           <Link 
             to="/" 
             onClick={(e) => handleNavigation(e, '/')} 
@@ -102,7 +102,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </Button>
           </nav>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Menu Toggle - Z-Index 50 to stay above mobile menu background */}
           <button 
             type="button"
             className="md:hidden text-dark-muted hover:text-white p-2 relative z-50 touch-manipulation active:bg-white/5 rounded-lg"
@@ -113,26 +113,32 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </button>
         </div>
 
-        {/* Mobile Menu - Z-Index 39 (logo é 50) */}
-        {/* Usando display condicional para não interferir na DOM quando fechado */}
+        {/* Mobile Menu - Z-Index 45 (Above header bg z-40, below Logo/Toggle z-50) */}
+        {/* Full screen layout (inset-0, h-dvh) covering the header area but sitting below the buttons */}
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 top-20 bg-dark-bg z-39 md:hidden flex flex-col p-4 space-y-4 overflow-y-auto animate-fade-in scroll-touch overscroll-contain pb-24 border-t border-dark-border">
-            {NAV_ITEMS.map((item) => (
-              <a 
-                key={item.path} 
-                href={item.path}
-                onClick={(e) => handleNavigation(e, item.path)}
-                className="text-lg text-dark-muted hover:text-white font-medium py-4 border-b border-dark-border block active:bg-dark-surface px-2 rounded transition-colors"
-              >
-                {item.label}
-              </a>
-            ))}
-            <div className="pt-4">
+          <div className="fixed inset-0 z-[45] bg-dark-bg md:hidden flex flex-col pt-24 px-6 pb-10 overflow-y-auto animate-fade-in scroll-touch overscroll-contain h-[100dvh]">
+            <div className="flex flex-col space-y-2">
+              {NAV_ITEMS.map((item) => (
+                <a 
+                  key={item.path} 
+                  href={item.path}
+                  onClick={(e) => handleNavigation(e, item.path)}
+                  className="text-2xl text-dark-muted hover:text-white font-semibold py-4 border-b border-dark-border/50 block active:bg-dark-surface/50 px-2 rounded-xl transition-all"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+            
+            <div className="mt-auto pt-8 pb-8 space-y-4">
+               <p className="text-sm text-dark-muted text-center mb-4">
+                 Vamos automatizar seu negócio?
+               </p>
               <Button fullWidth size="lg" onClick={() => {
                 window.open('https://wa.me/5500000000000', '_blank');
                 setIsMobileMenuOpen(false);
-              }}>
-                Agendar Reunião
+              }} className="shadow-xl">
+                Agendar Reunião no WhatsApp
               </Button>
             </div>
           </div>
