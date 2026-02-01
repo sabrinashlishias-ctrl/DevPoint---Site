@@ -83,10 +83,14 @@ const AronChatSection: React.FC = () => {
   useEffect(() => {
     const initChat = async () => {
       try {
-        if (!process.env.API_KEY) {
+        // Safe check for process.env
+        const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : undefined;
+
+        if (!apiKey) {
+          console.warn("API_KEY not found. Chat will run in mock mode.");
           return;
         }
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const ai = new GoogleGenAI({ apiKey });
         chatSessionRef.current = ai.chats.create({
           model: 'gemini-3-flash-preview',
           config: {
@@ -145,6 +149,7 @@ const AronChatSection: React.FC = () => {
         const result = await chatSessionRef.current.sendMessage({ message: text });
         if (result.text) responseText = result.text;
       } else {
+        // Fallback Mock Logic
         await new Promise(resolve => setTimeout(resolve, 1500));
         const lower = text.toLowerCase();
         
