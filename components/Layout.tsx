@@ -16,6 +16,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const { openChat } = useChat();
 
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   // CAMADA 2: Motion/Behavior
   // Lógica segura de scroll que não quebra a navegação se o elemento não existir
   const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
@@ -53,8 +65,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isHome = location.pathname === '/';
 
   // CAMADA 1: Layout Base
+  // Use overflow-x-hidden on the wrapper to prevent horizontal scrollbars from animations
+  // But ensure NO overflow-y restriction is applied here
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-dark-bg text-dark-text relative selection:bg-royal-500/30">
+    <div className="flex flex-col min-h-[100dvh] w-full bg-dark-bg text-dark-text relative selection:bg-royal-500/30 overflow-x-hidden">
       {/* Header - Z-Index 40 para ficar acima do conteúdo mas abaixo de modais críticos */}
       <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${isHome ? 'bg-dark-bg/90 backdrop-blur-md border-b border-dark-border' : 'bg-dark-bg border-b border-dark-border'}`}>
         <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
@@ -125,7 +139,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow pt-20 w-full overflow-x-hidden">
+      <main className="flex-grow pt-20 w-full relative z-0">
         {children}
       </main>
 
