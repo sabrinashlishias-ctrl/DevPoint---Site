@@ -2,12 +2,11 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DevPoint | Automação e Agendamento Inteligente</title>
     <meta name="description" content="Automação de atendimento via WhatsApp e agendamento com IA. Otimize seu tempo e não perca leads." />
-    
-    <!-- Tailwind CSS (CDN for static build simplicity) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
@@ -17,25 +16,25 @@
             },
             colors: {
               dark: {
-                bg: '#070B14',
-                surface: '#0F1623',
-                border: 'rgba(255, 255, 255, 0.08)',
-                text: '#E2E8F0',
-                muted: '#94A3B8',
+                bg: '#070B14',      // Main background (Deep Navy)
+                surface: '#0F1623', // Card/Section background
+                border: 'rgba(255, 255, 255, 0.08)', // Subtle border
+                text: '#E2E8F0',    // Primary text (Slate 200)
+                muted: '#94A3B8',   // Secondary text (Slate 400)
               },
               royal: {
                 50: '#f0f4ff',
                 100: '#e0eaff',
                 400: '#60a5fa',
                 500: '#3b82f6', 
-                600: '#2563eb',
+                600: '#2563eb', // Primary Brand
                 700: '#1d4ed8',
                 800: '#1e40af',
                 900: '#1e3a8a',
                 950: '#172554',
               },
               teal: {
-                400: '#2dd4bf',
+                400: '#2dd4bf', // Accent
                 500: '#14b8a6',
                 600: '#0d9488',
                 900: '#134e4a',
@@ -45,207 +44,41 @@
         }
       }
     </script>
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Custom Styles (Relative Path) -->
-    <link rel="stylesheet" href="./assets/css/style.css">
-
-    <!-- Import Map for Gemini -->
-    <script type="importmap">
-    {
-      "imports": {
-        "@google/genai": "https://esm.sh/@google/genai@^1.38.0"
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        background-color: #070B14;
+        color: #E2E8F0;
       }
-    }
-    </script>
-  </head>
-  <body class="bg-dark-bg text-dark-text selection:bg-royal-500/30 overflow-x-hidden">
-    
-    <!-- Navigation -->
-    <header id="header" class="fixed top-0 w-full z-40 transition-all duration-300 bg-dark-bg border-b border-dark-border md:bg-dark-bg/80 md:backdrop-blur-md">
-      <div class="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
-        <a href="#/" class="flex items-center gap-2 group relative z-50">
-          <div class="w-8 h-8 bg-royal-600 rounded-lg flex items-center justify-center shadow-lg shadow-royal-500/20 transition-transform group-hover:scale-105">
-            <span class="text-white font-bold text-lg">D</span>
-          </div>
-          <span class="text-xl font-bold text-white tracking-tight">DevPoint<span class="text-teal-400">.</span></span>
-        </a>
-
-        <!-- Desktop Nav -->
-        <nav class="hidden md:flex items-center space-x-8">
-          <a href="#/" class="nav-link text-sm font-medium text-white transition-colors">Início</a>
-          <a href="#/planos" class="nav-link text-sm font-medium text-dark-muted hover:text-white transition-colors">Planos</a>
-          <a href="#/como-funciona" class="nav-link text-sm font-medium text-dark-muted hover:text-white transition-colors">Como funciona</a>
-          <a href="#/contato" class="nav-link text-sm font-medium text-dark-muted hover:text-white transition-colors">Contato</a>
-          <button onclick="window.open('https://wa.me/5500000000000', '_blank')" class="bg-royal-600 hover:bg-royal-500 text-white px-3 py-1.5 text-sm rounded-lg shadow-lg shadow-royal-900/50 transition-all font-medium">
-            Agendar Reunião
-          </button>
-        </nav>
-
-        <!-- Mobile Menu Toggle -->
-        <button id="mobile-menu-btn" class="md:hidden text-dark-muted hover:text-white p-2 relative z-50 touch-manipulation">
-          <i data-lucide="menu"></i>
-        </button>
-      </div>
-
-      <!-- Mobile Menu Overlay -->
-      <div id="mobile-menu" class="fixed inset-0 top-20 bg-dark-bg z-40 hidden flex-col p-4 space-y-4 overflow-y-auto border-t border-dark-border">
-        <a href="#/" class="mobile-nav-link text-lg text-dark-muted hover:text-white font-medium py-4 border-b border-dark-border block">Início</a>
-        <a href="#/planos" class="mobile-nav-link text-lg text-dark-muted hover:text-white font-medium py-4 border-b border-dark-border block">Planos</a>
-        <a href="#/como-funciona" class="mobile-nav-link text-lg text-dark-muted hover:text-white font-medium py-4 border-b border-dark-border block">Como funciona</a>
-        <a href="#/contato" class="mobile-nav-link text-lg text-dark-muted hover:text-white font-medium py-4 border-b border-dark-border block">Contato</a>
-        <div class="pt-4">
-          <button onclick="window.open('https://wa.me/5500000000000', '_blank')" class="w-full bg-royal-600 hover:bg-royal-500 text-white px-8 py-3.5 text-lg rounded-lg shadow-lg shadow-royal-900/50 transition-all font-medium">
-            Agendar Reunião
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main Content App Router (Pre-rendered Home Content for immediate paint) -->
-    <main id="app" class="flex-grow pt-20 min-h-screen">
-        <!-- Pre-rendered: Hero -->
-        <section class="relative pt-12 pb-20 md:pt-24 md:pb-32 overflow-hidden bg-dark-bg">
-            <div class="hidden md:block absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-royal-900/30 rounded-full blur-3xl opacity-40 z-0 pointer-events-none"></div>
-            <div class="hidden md:block absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-teal-900/30 rounded-full blur-3xl opacity-30 z-0 pointer-events-none"></div>
-            
-            <div class="container mx-auto px-4 md:px-6 relative z-10 text-center">
-                <div class="max-w-4xl mx-auto mb-16">
-                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-royal-900/20 border border-royal-500/20 text-royal-300 text-xs font-semibold tracking-wide uppercase mb-6 shadow-sm shadow-royal-900/20">
-                      <span class="w-2 h-2 rounded-full bg-teal-400 mr-2 animate-pulse shadow-[0_0_8px_rgba(45,212,191,0.6)]"></span>
-                      Automação Inteligente 2.0
-                    </div>
-                    <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-6 glow-text">
-                      Automação de atendimento e <br class="hidden md:block"/>
-                      <span class="text-transparent bg-clip-text bg-gradient-to-r from-royal-400 to-teal-400">
-                        agendamento que não falha.
-                      </span>
-                    </h1>
-                    <p class="text-lg md:text-xl text-dark-muted mb-10 max-w-2xl mx-auto leading-relaxed">
-                      WhatsApp com IA, integrações robustas e rotinas automatizadas para negócios que dependem de uma agenda organizada.
-                    </p>
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                      <button onclick="window.open('https://wa.me/5500000000000', '_blank')" class="bg-royal-600 hover:bg-royal-500 text-white px-8 py-3.5 text-lg rounded-lg shadow-lg shadow-royal-900/50 transition-all font-medium">
-                        Agendar uma reunião
-                      </button>
-                      <button onclick="window.toggleChat()" class="bg-transparent border border-royal-500/30 text-royal-400 hover:bg-royal-500/10 px-8 py-3.5 text-lg rounded-lg transition-all font-medium">
-                        Tirar dúvidas com o agente
-                      </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pre-rendered: Visual Automation Composition -->
-            <div class="relative mx-auto max-w-5xl px-4">
-                 <div class="bg-[#05080F] rounded-3xl border border-dark-border shadow-2xl overflow-hidden relative group">
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-royal-900/10 blur-[100px] rounded-full pointer-events-none"></div>
-                    <div class="relative z-10 py-16 md:py-24 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0">
-                        <div class="hidden md:block absolute top-1/2 left-[25%] right-[25%] h-[1px] bg-gradient-to-r from-transparent via-royal-500/20 to-transparent -translate-y-1/2 z-0"></div>
-                        <div class="relative w-72 h-80 bg-dark-surface/50 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden z-10 transform hover:-translate-y-1 transition-transform duration-500">
-                            <div class="h-12 border-b border-white/5 flex items-center px-4 gap-3 bg-white/5">
-                                <div class="flex gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-white/10"></div><div class="w-2.5 h-2.5 rounded-full bg-white/10"></div></div>
-                            </div>
-                            <div class="p-5 flex flex-col gap-4 flex-1 justify-center">
-                                <div class="self-start bg-slate-800/50 border border-white/5 text-slate-300 px-4 py-3 rounded-2xl rounded-tl-none text-sm max-w-[85%] leading-relaxed">Gostaria de agendar para quinta-feira.</div>
-                                <div class="self-end bg-royal-600/90 text-white px-4 py-3 rounded-2xl rounded-tr-none text-sm max-w-[85%] leading-relaxed shadow-lg">Confirmado. O horário das 15:30 está livre?</div>
-                                <div class="self-start bg-slate-800/50 border border-white/5 text-slate-300 px-4 py-3 rounded-2xl rounded-tl-none text-sm max-w-[85%] leading-relaxed">Sim, perfeito.</div>
-                            </div>
-                        </div>
-                        <div class="relative z-20 mx-6 md:mx-12">
-                            <div class="absolute inset-0 bg-teal-500/10 blur-2xl rounded-full animate-pulse"></div>
-                            <div class="w-16 h-16 md:w-20 md:h-20 bg-[#0B1221] border border-royal-500/30 rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(59,130,246,0.15)] relative">
-                                 <i data-lucide="sparkles" class="w-8 h-8 text-royal-400 fill-royal-400/10"></i>
-                            </div>
-                        </div>
-                        <div class="relative w-72 h-80 bg-dark-surface/50 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden z-10 transform hover:-translate-y-1 transition-transform duration-500">
-                            <div class="h-12 border-b border-white/5 flex items-center justify-between px-4 bg-white/5">
-                                <span class="text-white text-sm font-medium flex items-center gap-2"><i data-lucide="calendar" class="w-3.5 h-3.5 text-teal-400"></i> Outubro</span>
-                                <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center"><span class="text-[10px] text-white font-bold">27</span></div>
-                            </div>
-                            <div class="p-5 space-y-3 flex-1">
-                                <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-transparent opacity-40"><span class="text-xs text-slate-400 font-mono">14:00</span><div class="h-1.5 w-16 bg-slate-600 rounded-full"></div></div>
-                                <div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-royal-500/10 border border-royal-500/30 relative overflow-hidden group"><div class="absolute left-0 top-0 bottom-0 w-1 bg-royal-500"></div><div class="flex items-center gap-3 z-10"><span class="text-xs text-white font-bold font-mono">15:30</span><span class="text-xs text-royal-200 font-medium">Reunião</span></div><div class="bg-royal-500 rounded-full p-1 z-10 shadow-lg"><i data-lucide="check" class="w-2.5 h-2.5 text-white"></i></div></div>
-                                <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-transparent opacity-40"><span class="text-xs text-slate-400 font-mono">16:30</span><div class="h-1.5 w-12 bg-slate-600 rounded-full"></div></div>
-                                 <div class="mt-auto bg-[#0F172A] border border-white/10 p-3 rounded-xl flex items-center gap-3 shadow-lg">
-                                    <div class="bg-teal-500/20 p-1.5 rounded-lg"><i data-lucide="clock" class="w-3 h-3 text-teal-400"></i></div>
-                                    <div><div class="text-[10px] text-white font-medium leading-tight">Sincronizado</div><div class="text-[9px] text-slate-400 leading-tight">Agenda atualizada</div></div>
-                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                 </div>
-            </div>
-        </section>
-
-        <!-- Placeholder for JS Hydration -->
-        <div id="aron-chat-mount"></div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-[#05080F] text-slate-400 py-12 border-t border-dark-border relative z-10">
-      <div class="container mx-auto px-4 md:px-6">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div class="col-span-1 md:col-span-1">
-            <div class="flex items-center gap-2 mb-4">
-              <div class="w-6 h-6 bg-royal-600 rounded flex items-center justify-center">
-                <span class="text-white font-bold text-xs">D</span>
-              </div>
-              <span class="text-lg font-bold text-white tracking-tight">DevPoint.</span>
-            </div>
-            <p class="text-sm text-dark-muted mb-4">
-              Automação inteligente para negócios que valorizam o tempo e a eficiência.
-            </p>
-          </div>
-          <div>
-            <h4 class="text-white font-semibold mb-4">Empresa</h4>
-            <ul class="space-y-2 text-sm">
-              <li><a href="#/como-funciona" class="hover:text-royal-400 transition-colors">Como funciona</a></li>
-              <!-- Corrected Link to Hash Router -->
-              <li><a href="#/planos" class="hover:text-royal-400 transition-colors">Planos e Preços</a></li>
-              <li><a href="#/contato" class="hover:text-royal-400 transition-colors">Trabalhe conosco</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-white font-semibold mb-4">Legal</h4>
-            <ul class="space-y-2 text-sm">
-              <li><a href="#" class="hover:text-royal-400 transition-colors">Termos de Uso</a></li>
-              <li><a href="#" class="hover:text-royal-400 transition-colors">Política de Privacidade</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-white font-semibold mb-4">Contato</h4>
-            <ul class="space-y-3 text-sm">
-              <li class="flex items-center gap-2">
-                <i data-lucide="message-circle" class="w-4 h-4 text-teal-400"></i>
-                <span>(11) 99999-9999</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="mail" class="w-4 h-4 text-teal-400"></i>
-                <span>contato@devpoint.com.br</span>
-              </li>
-              <li>
-                <button onclick="window.toggleChat()" class="text-royal-400 hover:text-white flex items-center gap-1 group transition-colors touch-manipulation">
-                  Falar com IA <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="border-t border-dark-border pt-8 text-center text-xs text-dark-muted">
-          &copy; 2025 DevPoint Automações. Todos os direitos reservados.
-        </div>
-      </div>
-    </footer>
-
-    <!-- Global Chat Widget -->
-    <div id="chat-container"></div>
-
-    <!-- App Logic (Relative Path) -->
-    <script type="module" src="./assets/js/app.js"></script>
-  </body>
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      /* Subtle glow for dark mode */
+      .glow-text {
+        text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-dark-bg text-dark-text selection:bg-royal-500/30">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>
