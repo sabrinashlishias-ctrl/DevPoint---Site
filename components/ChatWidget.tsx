@@ -7,7 +7,7 @@ const INITIAL_MESSAGES: ChatMessage[] = [
   {
     id: '1',
     sender: 'agent',
-    text: 'Olá! Sou o agente virtual da DevPoint. Como posso ajudar você a automatizar seu negócio hoje?',
+    text: 'Olá! Sou o agente virtual da PIPECODE. Como posso ajudar você a automatizar seu negócio hoje?',
     type: 'options',
     options: ['Quero agendar', 'Planos e valores', 'Como funciona', 'Manutenção']
   }
@@ -65,13 +65,16 @@ const ChatWidget: React.FC = () => {
            }]);
         }, 1000);
       } else if (lowerText.includes('plano') || lowerText.includes('valor') || lowerText.includes('preço')) {
-        botResponse.text = 'Temos planos a partir de R$ 3.000 para implementação. O MVP é ideal para começar, mas o Profissional é o mais popular. Gostaria de ver detalhes de qual?';
-        botResponse.options = ['MVP', 'Profissional', 'Premium'];
-      } else if (lowerText.includes('mvp')) {
-        botResponse.text = 'O plano MVP custa R$ 3.000 + R$ 700/mês. Inclui automação de WhatsApp básica e agendamento no Google Calendar.';
+        botResponse.text = 'Temos planos a partir de R$ 1.000 para implementação. O "Porta de Entrada" é ideal para começar, e o Profissional integra tudo. Gostaria de ver detalhes de qual?';
+        botResponse.options = ['Porta de Entrada', 'Profissional', 'Premium'];
+      } else if (lowerText.includes('mvp') || lowerText.includes('porta')) {
+        botResponse.text = 'O plano Porta de Entrada custa R$ 1.000 + R$ 350/mês. Inclui automação de WhatsApp e encaminhamento inteligente de leads, garantindo que você não perca vendas.';
+        botResponse.options = ['Quero esse', 'Ver outros', 'Agendar Reunião'];
+      } else if (lowerText.includes('profissional')) {
+        botResponse.text = 'O plano Profissional custa R$ 3.000 + R$ 700/mês. Inclui agendamento 100% automático e integração com seu CRM e Calendar.';
         botResponse.options = ['Quero esse', 'Ver outros', 'Agendar Reunião'];
       } else if (lowerText.includes('manutenção') || lowerText.includes('manutencao')) {
-        botResponse.text = 'A manutenção é fundamental para garantir que suas integrações não parem. Custa R$ 700/mês e inclui monitoramento e pequenos ajustes.';
+        botResponse.text = 'A manutenção (R$ 350 ou R$ 700) cobre os custos de APIs, servidores e garante que suas integrações continuem funcionando mesmo se o WhatsApp mudar algo.';
       } else if (lowerText.includes('como funciona')) {
          botResponse.text = 'Trabalhamos em 3 etapas: 1. Diagnóstico, 2. Implementação, 3. Manutenção. Quer agendar um diagnóstico gratuito?';
          botResponse.options = ['Sim, agendar', 'Dúvidas técnicas'];
@@ -107,7 +110,7 @@ const ChatWidget: React.FC = () => {
               <MessageSquare size={16} />
             </div>
             <div>
-              <h3 className="font-semibold text-sm">Agente DevPoint</h3>
+              <h3 className="font-semibold text-sm">Agente PIPECODE</h3>
               <p className="text-xs text-royal-200 flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full bg-teal-400 block animate-pulse"></span>
                 Online agora

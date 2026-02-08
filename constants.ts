@@ -3,30 +3,28 @@ import { Plan, FaqItem, NavItem, ProcessStep } from './types';
 
 export const PLANS: Plan[] = [
   {
-    id: 'mvp',
-    name: 'MVP',
-    priceImplementation: 'R$ 3.000',
-    priceMaintenance: 'R$ 700/mês',
-    description: 'Ideal para validar processos e organizar o atendimento inicial.',
-    targetAudience: 'Pequenos negócios, consultórios individuais e prestadores de serviço.',
+    id: 'porta-de-entrada',
+    name: 'Porta de Entrada',
+    priceImplementation: 'R$ 1.000',
+    priceMaintenance: 'R$ 350/mês',
+    description: 'Automação essencial para não perder nenhum lead no WhatsApp. A manutenção inclui os custos dos aplicativos e APIs necessárias.',
+    targetAudience: 'Pequenos negócios, consultórios e prestadores de serviço que não podem perder leads.',
     includes: [
-      'Atendimento automático inicial via WhatsApp (menu/triagem básica)',
-      'Coleta de dados essenciais (nome, serviço, dia/horário)',
-      'Registro de lead (Google Sheets ou CRM simples)',
-      'Agendamento no Google Calendar (criação de evento + confirmação)',
-      'Mensagens de confirmação e lembrete (1 disparo)',
-      'Tratamento básico de erro (fallback e aviso)',
-      'Documentação curta do fluxo'
+      'Robô 24/7 respondendo mensagens automaticamente',
+      'Interpretação da intenção do lead (ex: orçamento, agendamento)',
+      'Etiquetagem automática de contatos',
+      'Encaminhamento organizado para atendimento humano',
+      'Estrutura pensada para não perder leads, inclusive fora do horário'
     ],
     excludes: [
+      'Agendamento automático direto no calendário (apenas encaminha)',
       'Integrações complexas via API',
-      'Dashboards personalizados',
-      'IA generativa aberta'
+      'Dashboards personalizados'
     ],
     limits: [
       '1 canal (WhatsApp)',
-      'Até 1 agenda/calendário',
-      'Até 1 integração principal + 1 secundária'
+      'Até 1 agenda/calendário (visualização)',
+      'Foco em retenção de lead'
     ],
     estimatedTime: '5 a 10 dias úteis',
     highlight: false,
@@ -34,17 +32,17 @@ export const PLANS: Plan[] = [
   {
     id: 'profissional',
     name: 'Profissional',
-    priceImplementation: 'R$ 5.000',
+    priceImplementation: 'R$ 3.000',
     priceMaintenance: 'R$ 700/mês',
-    description: 'Para empresas que precisam de integração com CRM e mais robustez.',
+    description: 'Automação completa com agendamento automático e integração com sistemas do cliente.',
     targetAudience: 'Clínicas, escritórios de advocacia, imobiliárias e agências.',
     includes: [
-      'Tudo do plano MVP',
-      'Fluxo com ramificações (reagendar/cancelar/confirmar)',
-      'Integração com CRM (Pipedrive, HubSpot, Monday, etc.)',
-      'Logs estruturados (sucesso/falha)',
-      'IA para interpretação de mensagens e respostas curtas',
-      'Checklist de qualidade e testes',
+      'Tudo do plano Porta de Entrada',
+      'Fluxos com ramificações inteligentes (confirmar/reagendar/cancelar)',
+      'Agendamento automático sem intervenção humana',
+      'Integração com CRMs (Pipedrive, HubSpot, Monday, etc.)',
+      'Logs estruturados de execução (sucesso/falha)',
+      'Uso de IA para interpretação de mensagens e respostas curtas',
       '2 lembretes automáticos (ex.: 24h e 2h antes)'
     ],
     excludes: [

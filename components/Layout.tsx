@@ -80,9 +80,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             className="flex items-center gap-2 group relative z-50 select-none"
           >
             <div className="w-8 h-8 bg-royal-600 rounded-lg flex items-center justify-center shadow-lg shadow-royal-500/20 group-hover:scale-105 transition-transform">
-              <span className="text-white font-bold text-lg">D</span>
+              <span className="text-white font-bold text-lg">P</span>
             </div>
-            <span className="text-xl font-bold text-white tracking-tight">DevPoint<span className="text-teal-400">.</span></span>
+            <span className="text-xl font-bold text-white tracking-tight">PIPECODE<span className="text-teal-400">.</span></span>
           </Link>
 
           {/* Desktop Nav */}
@@ -157,9 +157,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="col-span-1 md:col-span-1">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-6 h-6 bg-royal-600 rounded flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">D</span>
+                  <span className="text-white font-bold text-xs">P</span>
                 </div>
-                <span className="text-lg font-bold text-white tracking-tight">DevPoint.</span>
+                <span className="text-lg font-bold text-white tracking-tight">PIPECODE.</span>
               </div>
               <p className="text-sm text-dark-muted mb-4">
                 Automação inteligente para negócios que valorizam o tempo e a eficiência.
@@ -197,7 +197,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail size={16} className="text-teal-400 flex-shrink-0" />
-                  <span>contato@devpoint.com.br</span>
+                  <span>contato@pipecode.com.br</span>
                 </li>
                 <li>
                   <button type="button" onClick={openChat} className="text-royal-400 hover:text-white flex items-center gap-1 group transition-colors touch-manipulation pointer-events-auto py-1">
@@ -208,7 +208,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
           </div>
           <div className="border-t border-dark-border pt-8 text-center text-xs text-dark-muted">
-            &copy; {new Date().getFullYear()} DevPoint Automações. Todos os direitos reservados.
+            &copy; {new Date().getFullYear()} PIPECODE Automações. Todos os direitos reservados.
           </div>
         </div>
       </footer>

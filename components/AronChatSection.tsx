@@ -10,14 +10,14 @@ interface Message {
 
 const SUGGESTIONS_MAP: Record<string, string[]> = {
   start: ["Conhecer os planos", "Já quero agendar"],
-  plans: ["Ver valores", "Diferença MVP vs Pro"],
+  plans: ["Ver valores", "Diferença Porta vs Pro"],
   details: ["Como funciona a IA?", "Prazos de entrega"],
   closing: ["Agendar Reunião", "Falar no WhatsApp"],
   default: ["Ver Planos", "Agendar Conversa"]
 };
 
 const SYSTEM_INSTRUCTION = `
-Você é Aron, agente especialista da DevPoint.
+Você é Aron, agente especialista da PIPECODE.
 
 PERSONALIDADE:
 - Profissional, direto, educado e confiante.
@@ -39,13 +39,13 @@ O QUE OFERECEMOS:
 - Redução de perda de leads
 
 PLANOS:
-- MVP: implantação base da automação (WhatsApp + IA + agendamento) — a partir de R$3.000
-- Profissional: fluxos mais avançados, personalização e integrações — a partir de R$5.000
-- Premium: automação completa, múltiplos fluxos, maior complexidade — a partir de R$8.000
+- Porta de Entrada: automação essencial para não perder leads (WhatsApp + IA + encaminhamento) — R$ 1.000 (implantação) + R$ 350/mês.
+- Profissional: automação completa com agendamento automático e CRM — R$ 3.000 (implantação) + R$ 700/mês.
+- Premium: automação enterprise, múltiplos fluxos, banco de dados — a partir de R$ 8.000.
 
 COMPORTAMENTO EM PERGUNTAS DE PREÇO:
 - Nunca dizer "depende de API".
-- Sempre responder algo como: "Consigo te orientar sim. Os projetos começam em R$3.000. Posso te ajudar a entender qual plano faz mais sentido."
+- Sempre responder algo como: "Nossos projetos começam em R$ 1.000 com o plano Porta de Entrada. Posso te ajudar a entender qual plano faz mais sentido."
 
 ENCERRAMENTO PADRÃO:
 - Sempre oferecer: "Quer que eu te ajude a escolher o plano ideal?" ou "Posso te explicar como funciona na prática."
@@ -56,7 +56,7 @@ const AronChatSection: React.FC = () => {
     {
       id: '1',
       role: 'aron',
-      content: 'Olá! Sou o Aron, especialista em automação da DevPoint. Como posso ajudar seu negócio a não perder mais leads?'
+      content: 'Olá! Sou o Aron, especialista em automação da PIPECODE. Como posso ajudar seu negócio a não perder mais leads?'
     }
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -152,7 +152,7 @@ const AronChatSection: React.FC = () => {
         const lower = text.toLowerCase();
         
         if (lower.includes('preço') || lower.includes('valor') || lower.includes('quanto')) {
-           responseText = "Consigo te orientar sim. Nossos projetos de automação começam em R$ 3.000 (Plano MVP). Se precisar de algo mais robusto com integrações complexas, temos o Plano Profissional a partir de R$ 5.000. Qual faz mais sentido para o seu momento?";
+           responseText = "Consigo te orientar sim. Nossos projetos de automação começam em R$ 1.000 (Plano Porta de Entrada). Se precisar de algo mais robusto com agendamento automático e CRM, temos o Plano Profissional por R$ 3.000. Qual faz mais sentido para o seu momento?";
         } else if (lower.includes('agendar') || lower.includes('reunião')) {
            responseText = "Perfeito. Para agendarmos um diagnóstico e entendermos sua operação, basta clicar no botão 'Agendar Reunião' aqui no site. Vamos analisar seu fluxo atual.";
         } else {
@@ -225,7 +225,7 @@ const AronChatSection: React.FC = () => {
                   </div>
                   <div className="flex flex-col">
                     <span className="font-bold text-white text-sm">Aron</span>
-                    <span className="text-[10px] text-royal-300 font-medium">DevPoint AI</span>
+                    <span className="text-[10px] text-royal-300 font-medium">PIPECODE AI</span>
                   </div>
                 </div>
                 

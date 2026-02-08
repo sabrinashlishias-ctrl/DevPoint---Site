@@ -140,7 +140,7 @@ const HomePage: React.FC = () => {
       <section className="py-20 bg-dark-bg">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-white mb-4">Como a DevPoint funciona</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">Como a PIPECODE funciona</h2>
             <p className="text-dark-muted max-w-2xl mx-auto">Processo simplificado para tirar sua automação do papel sem dor de cabeça.</p>
           </div>
 
@@ -274,7 +274,7 @@ const HomePage: React.FC = () => {
                   <div>
                     <h3 className="font-bold text-lg text-white mb-2">Clínica Odontológica Sorrir</h3>
                     <p className="text-dark-muted text-sm mb-4">
-                       "Antes perdíamos muitos pacientes que chamavam fora do horário. Com a IA da DevPoint, triplicamos os agendamentos noturnos."
+                       "Antes perdíamos muitos pacientes que chamavam fora do horário. Com a IA da PIPECODE, triplicamos os agendamentos noturnos."
                     </p>
                     <span className="text-teal-400 text-sm font-medium">Plano Profissional</span>
                   </div>

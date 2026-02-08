@@ -48,7 +48,7 @@ const ContactPage: React.FC = () => {
                      <Mail className="mt-1 text-teal-300" />
                      <div>
                         <p className="font-medium">E-mail</p>
-                        <p className="text-royal-100">contato@devpoint.com.br</p>
+                        <p className="text-royal-100">contato@pipecode.com.br</p>
                      </div>
                   </div>
                   <div className="flex items-start gap-4">
